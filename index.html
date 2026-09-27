@@ -1,0 +1,962 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What Disney Princess Are You?</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 25px;
+
+    font-family: Georgia, serif;
+
+    background:
+        linear-gradient(
+            rgba(255,235,244,0.72),
+            rgba(232,246,237,0.72)
+        ),
+        url("https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=2000&q=80");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.quiz-box {
+    width: 95%;
+    max-width: 850px;
+
+    padding: 50px 40px;
+
+    text-align: center;
+
+    background: rgba(255,250,253,0.95);
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 20px 50px rgba(80,50,70,0.20);
+}
+
+.crown {
+    font-size: 52px;
+    margin-bottom: 12px;
+}
+
+h1 {
+    margin: 0;
+
+    font-size: 42px;
+
+    color: #874f72;
+}
+
+.subtitle {
+    font-size: 19px;
+
+    color: #665765;
+
+    margin: 18px 0 30px;
+}
+
+.name-input {
+    width: 80%;
+    max-width: 430px;
+
+    padding: 15px;
+
+    border: 2px solid #d8abc2;
+
+    border-radius: 15px;
+
+    font-family: Georgia, serif;
+
+    font-size: 17px;
+
+    text-align: center;
+}
+
+button {
+    margin-top: 25px;
+
+    padding: 14px 38px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: #a96d91;
+
+    color: white;
+
+    font-family: Georgia, serif;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #895675;
+}
+
+#quiz,
+#result {
+    display: none;
+}
+
+.question-number {
+    color: #a96d91;
+
+    font-size: 17px;
+
+    margin-bottom: 15px;
+}
+
+.question {
+    display: block;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #874f72;
+
+    margin: 15px auto 22px;
+
+    line-height: 1.3;
+
+    max-width: 700px;
+}
+
+.progress {
+    width: 80%;
+    max-width: 600px;
+
+    height: 8px;
+
+    background: #ead9e3;
+
+    border-radius: 10px;
+
+    margin: 0 auto 25px;
+}
+
+.progress-bar {
+    height: 100%;
+
+    width: 12.5%;
+
+    background: #a96d91;
+
+    border-radius: 10px;
+}
+
+.option {
+    width: 85%;
+    max-width: 600px;
+
+    margin: 10px auto;
+
+    padding: 13px 18px;
+
+    background: white;
+
+    color: #76536b;
+
+    border: 2px solid #e1bfd2;
+
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.option:hover {
+    background: #fcecf5;
+}
+
+.option.selected {
+    background: #efd3e2;
+
+    border-color: #a96d91;
+}
+
+.princess-name {
+    font-size: 38px;
+
+    color: #874f72;
+
+    margin: 15px 0;
+}
+
+.princess-photo {
+    width: 260px;
+    height: 320px;
+
+    object-fit: cover;
+
+    border-radius: 25px;
+
+    border: 5px solid white;
+
+    box-shadow:
+        0 10px 30px rgba(80,50,70,0.25);
+}
+
+.description {
+    max-width: 650px;
+
+    margin: 25px auto;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    color: #665765;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+
+
+<!-- START SCREEN -->
+
+<div id="start">
+
+    <div class="crown">👑</div>
+
+    <h1>What Disney Princess Are You?</h1>
+
+    <p class="subtitle">
+        Discover which princess matches your personality.
+    </p>
+
+    <input
+        type="text"
+        id="name"
+        class="name-input"
+        placeholder="Enter your name"
+    >
+
+    <br>
+
+    <button onclick="startQuiz()">
+        Start Quiz ✨
+    </button>
+
+</div>
+
+
+<!-- QUIZ -->
+
+<div id="quiz">
+
+    <div
+        class="question-number"
+        id="questionNumber">
+    </div>
+
+    <div class="progress">
+
+        <div
+            class="progress-bar"
+            id="progressBar">
+        </div>
+
+    </div>
+
+    <div
+        class="question"
+        id="question">
+    </div>
+
+    <div id="options"></div>
+
+    <button onclick="nextQuestion()">
+        Next →
+    </button>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div id="result">
+
+    <div class="crown">👑</div>
+
+    <p
+        class="subtitle"
+        id="greeting">
+    </p>
+
+    <div
+        class="princess-name"
+        id="princessName">
+    </div>
+
+    <img
+        id="princessPhoto"
+        class="princess-photo"
+        src=""
+        alt="Princess"
+    >
+
+    <p
+        class="description"
+        id="description">
+    </p>
+
+    <button onclick="restartQuiz()">
+        Take the Quiz Again ✨
+    </button>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+let currentQuestion = 0;
+
+let userName = "";
+
+let selectedAnswer = "";
+
+let answers = [];
+
+
+/* QUESTIONS */
+
+const questions = [
+
+/* QUESTION 1 */
+
+{
+    question: "What is your favorite color?",
+
+    options: [
+        "A — Pink",
+        "B — Blue",
+        "C — Red",
+        "D — Black",
+        "E — Purple",
+        "F — Other"
+    ]
+},
+
+
+/* QUESTION 2 */
+
+{
+    question: "What is your favorite season?",
+
+    options: [
+        "A — Spring",
+        "B — Summer",
+        "C — Autumn",
+        "D — Winter"
+    ]
+},
+
+
+/* QUESTION 3 */
+
+{
+    question: "What is your favorite pet?",
+
+    options: [
+        "A — Cat",
+        "B — Dog",
+        "C — Snake",
+        "D — Bird",
+        "E — Horse",
+        "F — Other"
+    ]
+},
+
+
+/* QUESTION 4 */
+
+{
+    question: "What's your type in men?",
+
+    options: [
+        "A — The charming gentleman who treats everyone with respect.",
+        "B — The quiet, mysterious one who is hard to read.",
+        "C — The funny, chaotic one who can always make you laugh.",
+        "D — The protective one who always has your back.",
+        "E — The ambitious one who has big dreams and works for them.",
+        "F — The rebellious one who doesn't care what everyone else thinks.",
+        "G — I don't need a man."
+    ]
+},
+
+
+/* QUESTION 5 */
+
+{
+    question: "What's your aesthetic?",
+
+    options: [
+        "A — Soft & Romantic",
+        "B — Cottagecore",
+        "C — Dark & Elegant",
+        "D — Royalcore",
+        "E — Fairycore",
+        "F — Modern Chic",
+        "G — Oceanic",
+        "H — Classic Vintage",
+        "I — Other aesthetic"
+    ]
+},
+
+
+/* QUESTION 6 */
+
+{
+    question: "What is your perfect date idea?",
+
+    options: [
+        "A — Picnic",
+        "B — Movie",
+        "C — Netflix and chill",
+        "D — Amusement park",
+        "E — Cooking",
+        "F — Restaurant dinner",
+        "G — Other"
+    ]
+},
+
+
+/* QUESTION 7 */
+
+{
+    question: "What is your ideal morning vibe?",
+
+    options: [
+        "A — Jog in nature",
+        "B — Meditate and drink tea",
+        "C — Sketch and journal",
+        "D — Read books",
+        "E — Plan your day",
+        "F — Other"
+    ]
+},
+
+
+/* QUESTION 8 */
+
+{
+    question: "Pick your dream place to visit",
+
+    options: [
+        "A — Mountains",
+        "B — Castle",
+        "C — Museum",
+        "D — Forest Adventure",
+        "E — Aquarium",
+        "F — Other"
+    ]
+}
+
+];
+
+
+/* START QUIZ */
+
+function startQuiz() {
+
+    userName =
+        document.getElementById("name").value.trim();
+
+    if (userName === "") {
+
+        alert("Please enter your name first!");
+
+        return;
+    }
+
+    document.getElementById("start").style.display =
+        "none";
+
+    document.getElementById("quiz").style.display =
+        "block";
+
+    showQuestion();
+}
+
+
+/* SHOW QUESTION */
+
+function showQuestion() {
+
+    selectedAnswer = "";
+
+    const q =
+        questions[currentQuestion];
+
+
+    document.getElementById("questionNumber").innerText =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+    document.getElementById("question").innerText =
+        q.question;
+
+
+    document.getElementById("progressBar").style.width =
+        (
+            (currentQuestion + 1)
+            /
+            questions.length
+            *
+            100
+        ) + "%";
+
+
+    let html = "";
+
+
+    q.options.forEach(function(option) {
+
+        html += `
+            <div
+                class="option"
+                onclick="selectOption(this, '${option.replace(/'/g, "\\'")}')"
+            >
+                ${option}
+            </div>
+        `;
+
+    });
+
+
+    document.getElementById("options").innerHTML =
+        html;
+}
+
+
+/* SELECT OPTION */
+
+function selectOption(element, answer) {
+
+    selectedAnswer = answer;
+
+
+    document
+        .querySelectorAll(".option")
+        .forEach(function(option) {
+
+            option.classList.remove("selected");
+
+        });
+
+
+    element.classList.add("selected");
+}
+
+
+/* NEXT QUESTION */
+
+function nextQuestion() {
+
+    if (selectedAnswer === "") {
+
+        alert("Please select an answer!");
+
+        return;
+    }
+
+
+    answers[currentQuestion] =
+        selectedAnswer;
+
+
+    currentQuestion++;
+
+
+    if (currentQuestion < questions.length) {
+
+        showQuestion();
+
+    } else {
+
+        showResult();
+
+    }
+}
+
+
+/* RESULT */
+
+function showResult() {
+
+    let scores = {
+
+        "Cinderella": 0,
+        "Belle": 0,
+        "Ariel": 0,
+        "Rapunzel": 0,
+        "Mulan": 0,
+        "Tiana": 0,
+        "Moana": 0,
+        "Merida": 0,
+        "Jasmine": 0,
+        "Snow White": 0,
+        "Pocahontas": 0,
+        "Aurora": 0
+
+    };
+
+
+    answers.forEach(function(answer) {
+
+
+        /* COLORS */
+
+        if (answer.includes("Pink"))
+            scores["Cinderella"]++;
+
+        if (answer.includes("Blue"))
+            scores["Cinderella"]++;
+
+        if (answer.includes("Red"))
+            scores["Merida"]++;
+
+        if (answer.includes("Black"))
+            scores["Jasmine"]++;
+
+        if (answer.includes("Purple"))
+            scores["Rapunzel"]++;
+
+
+        /* SEASONS */
+
+        if (answer.includes("Spring"))
+            scores["Rapunzel"]++;
+
+        if (answer.includes("Summer"))
+            scores["Ariel"]++;
+
+        if (answer.includes("Autumn"))
+            scores["Pocahontas"]++;
+
+        if (answer.includes("Winter"))
+            scores["Aurora"]++;
+
+
+        /* PETS */
+
+        if (answer.includes("Cat"))
+            scores["Jasmine"]++;
+
+        if (answer.includes("Dog"))
+            scores["Cinderella"]++;
+
+        if (answer.includes("Snake"))
+            scores["Jasmine"]++;
+
+        if (answer.includes("Bird"))
+            scores["Snow White"]++;
+
+        if (answer.includes("Horse"))
+            scores["Merida"]++;
+
+
+        /* TYPE */
+
+        if (answer.includes("charming gentleman"))
+            scores["Cinderella"]++;
+
+        if (answer.includes("quiet, mysterious"))
+            scores["Aurora"]++;
+
+        if (answer.includes("funny, chaotic"))
+            scores["Rapunzel"]++;
+
+        if (answer.includes("protective"))
+            scores["Mulan"]++;
+
+        if (answer.includes("ambitious"))
+            scores["Tiana"]++;
+
+        if (answer.includes("rebellious"))
+            scores["Merida"]++;
+
+        if (answer.includes("don't need a man"))
+            scores["Jasmine"]++;
+
+
+        /* AESTHETIC */
+
+        if (answer.includes("Soft & Romantic"))
+            scores["Cinderella"]++;
+
+        if (answer.includes("Cottagecore"))
+            scores["Snow White"]++;
+
+        if (answer.includes("Dark & Elegant"))
+            scores["Jasmine"]++;
+
+        if (answer.includes("Royalcore"))
+            scores["Tiana"]++;
+
+        if (answer.includes("Fairycore"))
+            scores["Rapunzel"]++;
+
+        if (answer.includes("Modern Chic"))
+            scores["Jasmine"]++;
+
+        if (answer.includes("Oceanic"))
+            scores["Ariel"]++;
+
+        if (answer.includes("Classic Vintage"))
+            scores["Belle"]++;
+
+
+        /* DATE */
+
+        if (answer.includes("Picnic"))
+            scores["Pocahontas"]++;
+
+        if (answer.includes("Movie"))
+            scores["Rapunzel"]++;
+
+        if (answer.includes("Netflix"))
+            scores["Aurora"]++;
+
+        if (answer.includes("Amusement"))
+            scores["Rapunzel"]++;
+
+        if (answer.includes("Cooking"))
+            scores["Tiana"]++;
+
+        if (answer.includes("Restaurant"))
+            scores["Cinderella"]++;
+
+
+        /* MORNING */
+
+        if (answer.includes("Jog"))
+            scores["Pocahontas"]++;
+
+        if (answer.includes("Meditate"))
+            scores["Aurora"]++;
+
+        if (answer.includes("Sketch"))
+            scores["Belle"]++;
+
+        if (answer.includes("Read"))
+            scores["Belle"]++;
+
+        if (answer.includes("Plan"))
+            scores["Tiana"]++;
+
+
+        /* DREAM PLACE */
+
+        if (answer.includes("Mountains"))
+            scores["Moana"]++;
+
+        if (answer.includes("Castle"))
+            scores["Cinderella"]++;
+
+        if (answer.includes("Museum"))
+            scores["Belle"]++;
+
+        if (answer.includes("Forest"))
+            scores["Pocahontas"]++;
+
+        if (answer.includes("Aquarium"))
+            scores["Ariel"]++;
+
+    });
+
+
+    let princess = "Cinderella";
+
+    let highest = -1;
+
+
+    for (let name in scores) {
+
+        if (scores[name] > highest) {
+
+            highest = scores[name];
+
+            princess = name;
+
+        }
+
+    }
+
+
+    /* DESCRIPTIONS */
+
+    const descriptions = {
+
+        "Cinderella":
+        "You are graceful, kind and hopeful. You believe in yourself and keep your heart kind even when things become difficult.",
+
+        "Belle":
+        "You are intelligent, thoughtful and curious. You love learning and seeing the deeper side of people and the world.",
+
+        "Ariel":
+        "You are adventurous, curious and full of wonder. You love discovering new things and following your dreams.",
+
+        "Rapunzel":
+        "You are creative, cheerful and curious. You bring fun and energy wherever you go and love exploring new possibilities.",
+
+        "Mulan":
+        "You are brave, determined and resourceful. You face challenges with courage and believe in your own abilities.",
+
+        "Tiana":
+        "You are ambitious, hardworking and focused. You have big dreams and are willing to work to make them happen.",
+
+        "Moana":
+        "You are adventurous, brave and determined. You love exploring and have a strong sense of purpose.",
+
+        "Merida":
+        "You are bold, independent and adventurous. You like choosing your own path and standing up for yourself.",
+
+        "Jasmine":
+        "You are confident, independent and strong-minded. You know your own worth and value freedom.",
+
+        "Snow White":
+        "You are kind, caring and warm-hearted. You naturally bring comfort and happiness to the people around you.",
+
+        "Pocahontas":
+        "You are adventurous, thoughtful and connected to nature. You value freedom and trust your instincts.",
+
+        "Aurora":
+        "You are calm, dreamy and imaginative. You enjoy peaceful moments and have a gentle personality."
+
+    };
+
+
+    /* IMAGES */
+
+    const images = {
+
+        "Cinderella":
+        "https://upload.wikimedia.org/wikipedia/en/b/bd/Cinderella_character.png",
+
+        "Belle":
+        "https://upload.wikimedia.org/wikipedia/en/d/d0/Belle_disney.png",
+
+        "Ariel":
+        "https://upload.wikimedia.org/wikipedia/en/7/75/Ariel_disney.png",
+
+        "Rapunzel":
+        "https://upload.wikimedia.org/wikipedia/en/a/a8/Rapunzel_character.png",
+
+        "Mulan":
+        "https://upload.wikimedia.org/wikipedia/en/4/4e/Mulan_disney.png",
+
+        "Tiana":
+        "https://upload.wikimedia.org/wikipedia/en/0/0e/Tiana_Disney.png",
+
+        "Moana":
+        "https://upload.wikimedia.org/wikipedia/en/2/26/Moana_Disney.png",
+
+        "Merida":
+        "https://upload.wikimedia.org/wikipedia/en/7/76/Merida_Disney.png",
+
+        "Jasmine":
+        "https://upload.wikimedia.org/wikipedia/en/5/51/Jasmine_Disney.png",
+
+        "Snow White":
+        "https://upload.wikimedia.org/wikipedia/en/1/11/Snow_White_Disney.png",
+
+        "Pocahontas":
+        "https://upload.wikimedia.org/wikipedia/en/7/76/Pocahontas_character.png",
+
+        "Aurora":
+        "https://upload.wikimedia.org/wikipedia/en/9/95/Aurora_Disney.png"
+
+    };
+
+
+    document.getElementById("quiz").style.display =
+        "none";
+
+    document.getElementById("result").style.display =
+        "block";
+
+
+    document.getElementById("greeting").innerText =
+        "Congratulations, " +
+        userName +
+        "!";
+
+
+    document.getElementById("princessName").innerText =
+        "You are " +
+        princess +
+        "! 👑";
+
+
+    document.getElementById("description").innerText =
+        descriptions[princess];
+
+
+    document.getElementById("princessPhoto").src =
+        images[princess];
+
+}
+
+
+/* RESTART */
+
+function restartQuiz() {
+
+    currentQuestion = 0;
+
+    selectedAnswer = "";
+
+    answers = [];
+
+
+    document.getElementById("result").style.display =
+        "none";
+
+    document.getElementById("start").style.display =
+        "block";
+
+
+    document.getElementById("name").value = "";
+
+}
+
+</script>
+
+</body>
+</html>
+```
